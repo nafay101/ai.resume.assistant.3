@@ -1,0 +1,81 @@
+# ai-resume-assistant
+# 📄 ATS Resume Checker
+
+A Streamlit app that scores your resume for ATS (Applicant Tracking System) compatibility and gives specific, actionable improvements, powered by Google Gemini Flash.
+
+## Features
+
+- Upload a resume as **PDF, DOCX or TXT**
+- Optional **job description** input for a tailored keyword match
+- **ATS score (0-100)** with a breakdown: formatting, keywords, experience impact, education, readability
+- Keywords found vs. missing
+- Strengths and prioritized improvements (High / Medium / Low)
+- Sample bullet-point rewrites
+- Downloadable JSON report
+
+## Tech Stack
+
+- [Streamlit](https://streamlit.io) for the UI
+- [Google Gemini](https://ai.google.dev) (`gemini-2.5-flash` by default) via the `google-genai` SDK
+- `pypdf` and `python-docx` for text extraction
+
+## Run Locally
+
+```bash
+git clone https://github.com/<your-username>/<your-repo>.git
+cd <your-repo>
+
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey), then provide it in one of these ways:
+
+1. **Environment variable**
+   ```bash
+   export GEMINI_API_KEY="your_key"      # Windows PowerShell: $env:GEMINI_API_KEY="your_key"
+   ```
+2. **Streamlit secrets**: create `.streamlit/secrets.toml`:
+   ```toml
+   GEMINI_API_KEY = "your_key"
+   ```
+3. **Paste it in the app sidebar** at runtime.
+
+Start the app:
+
+```bash
+streamlit run app.py
+```
+
+## Deploy on Streamlit Community Cloud
+
+1. Push this repo to GitHub (do **not** commit `secrets.toml`).
+2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in with GitHub.
+3. Click **Create app**, choose your repo, branch `main`, and main file `app.py`.
+4. Open **Advanced settings → Secrets** and add:
+   ```toml
+   GEMINI_API_KEY = "your_key"
+   ```
+5. Click **Deploy**.
+
+## Project Structure
+
+```
+.
+├── app.py             # Streamlit app
+├── requirements.txt   # Python dependencies
+└── README.md
+```
+
+## Notes
+
+- Scanned/image-only PDFs can't be parsed, which is also a red flag for real ATS systems.
+- The score is an AI estimate, not the output of any specific ATS. Use it as guidance.
+- Resume text is sent to the Gemini API for analysis; the app does not store it.
+- You can change the model name in the sidebar if a newer Flash model is available.
+
+## License
+
+MIT
